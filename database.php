@@ -81,7 +81,7 @@ class DAO
 		$reponse->execute([$pokedexId]);
 		$lst = [];
 		while ($ligne = $reponse->fetch()) {
-			$lst[] = [$ligne[0], $ligne[1], $ligne[2], $ligne[3], $ligne[4], $ligne[5], $ligne[6]];
+			$lst[] = [$ligne[0], $ligne[1], $ligne[2], $ligne[3], $ligne[4], $ligne[5], $ligne[6], $ligne[7], $ligne[8]];
 		}
 		$reponse->closeCursor();
 		return $lst;
@@ -94,7 +94,7 @@ class DAO
         $reponse->execute([$name]);
         $lst = [];
         while ($ligne = $reponse->fetch()) {
-            $lst[] = [$ligne[0], $ligne[1], $ligne[2], $ligne[3], $ligne[4], $ligne[5], $ligne[6]];
+            $lst[] = [$ligne[0], $ligne[1], $ligne[2], $ligne[3], $ligne[4], $ligne[5], $ligne[6], $ligne[7], $ligne[8]];
         }
         $reponse->closeCursor();
         return $lst;
