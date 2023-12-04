@@ -33,6 +33,6 @@ Ce projet a été développé en utilisant les technologies suivantes :
 ```php
 // config.php
 <?php
-        $pdo = new PDO('mysql:host=SERVERADRESS;dbname=DATABASENAME', 'USER', 'PASSWORD');
+        $pdo = new PDO('mysql:host=SERVERADRESS;dbname=DATABASENAME', 'USERNAME', 'PASSWORD');
 ?>
 
