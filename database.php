@@ -186,16 +186,32 @@ class DAO
     }
 
     public function countPokemonByGeneration($generation)
+        {
+            $bdd = $this->connexion();
+            $reponse = $bdd->prepare("SELECT COUNT(*) as total FROM pokemons WHERE apiGeneration = ?");
+            $reponse->execute([$generation]);
+            $result = $reponse->fetch(PDO::FETCH_ASSOC);
+            $reponse->closeCursor();
+
+            // Renvoie le nombre total de Pokémon dans la génération spécifiée
+            return $result['total'];
+        }
+
+        public function getPokemonByGenerationWithPagination($generation, $offset, $limit)
     {
         $bdd = $this->connexion();
-        $reponse = $bdd->prepare("SELECT COUNT(*) as total FROM pokemons WHERE apiGeneration = ?");
-        $reponse->execute([$generation]);
-        $result = $reponse->fetch(PDO::FETCH_ASSOC);
+        $reponse = $bdd->prepare("SELECT * FROM pokemons WHERE apiGeneration = ? LIMIT ?, ?");
+        $reponse->bindParam(1, $generation, PDO::PARAM_INT);
+        $reponse->bindParam(2, $offset, PDO::PARAM_INT);
+        $reponse->bindParam(3, $limit, PDO::PARAM_INT);
+        $reponse->execute();
+
+        $pokemonList = $reponse->fetchAll(PDO::FETCH_ASSOC);
         $reponse->closeCursor();
 
-        // Renvoie le nombre total de Pokémon dans la génération spécifiée
-        return $result['total'];
+        return $pokemonList;
     }
+
 
     // Fonction pour formater une carte Pokemon
     function formatPokemonCard($pokemon)
