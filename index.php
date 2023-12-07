@@ -25,6 +25,9 @@ if ($dao->isPokemonsTableEmpty()) {
         }
     } elseif (isset($_POST['generationSelect'])) {
         $selectedGeneration = $_POST['generationSelect'];
+        $numberOfPokemon = $dao->countPokemonByGeneration($selectedGeneration);
+        echo "Il y a $numberOfPokemon Pokémon dans la génération $selectedGeneration.";
+        // Calculer l'offset pour la requête SQL
         $pokemonList = $dao->getPokemonByGeneration($selectedGeneration);
         // Affichage de la liste des Pokémon
         echo '<div class="pokemon-list">';
@@ -72,7 +75,6 @@ if ($dao->isPokemonsTableEmpty()) {
             }
         }
     }
-    
     handleSearch($dao);
     handleDeletion($dao);
     ?>

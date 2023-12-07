@@ -79,6 +79,14 @@ class DAO
         return $reponse->rowCount() > 0; // Vérifiez le nombre de lignes affectées
     }
 
+    // Fonction pour obtenir le nombre total d'enregistrements dans la table des pokémons
+    public function getTotalRecords()
+    {
+        $bdd = $this->connexion();
+        $reponse = $bdd->query("SELECT COUNT(*) FROM pokemons");
+        $totalRecords = $reponse->fetchColumn();
+        return $totalRecords;
+    }
 
 
     public function listPokemons()
@@ -175,6 +183,18 @@ class DAO
         $pokemonList = $reponse->fetchAll(PDO::FETCH_ASSOC);
         $reponse->closeCursor();
         return $pokemonList;
+    }
+
+    public function countPokemonByGeneration($generation)
+    {
+        $bdd = $this->connexion();
+        $reponse = $bdd->prepare("SELECT COUNT(*) as total FROM pokemons WHERE apiGeneration = ?");
+        $reponse->execute([$generation]);
+        $result = $reponse->fetch(PDO::FETCH_ASSOC);
+        $reponse->closeCursor();
+
+        // Renvoie le nombre total de Pokémon dans la génération spécifiée
+        return $result['total'];
     }
 
     // Fonction pour formater une carte Pokemon
