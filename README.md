@@ -33,7 +33,7 @@ Ce projet a été développé en utilisant les technologies suivantes :
 2. Modifiez les paramètres de connexion à la base de données dans le fichier `database.php`.
 
 ```php
-// config.php
+// database.php
 <?php
         $pdo = new PDO('mysql:host=SERVERADRESS;dbname=DATABASENAME', 'USERNAME', 'PASSWORD');
 ?>
