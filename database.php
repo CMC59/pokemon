@@ -66,7 +66,20 @@ class DAO
         
         $reponse = $bdd->prepare("UPDATE pokemons SET name = ?, image = ?, sprite = ?, apiTypes = ?, apiGeneration = ?, apiEvolutions = ?, apiPreEvolution = ? WHERE pokedexId = ?");
         $reponse->execute([$name, $image, $sprite, $apiTypes, $apiGeneration, $apiEvolutions, $apiPreEvolution, $pokedexId]);
+        
     }
+
+    // Fonction pour mettre à jour le nom et l'identifiant d'un Pokémon dans la base de données
+    public function updatePokemonDetails($pokedexId, $newName, $newId)
+    {
+        $bdd = $this->connexion();
+        $reponse = $bdd->prepare("UPDATE pokemons SET name=?, id=? WHERE pokedexId=?");
+        $reponse->execute([$newName, $newId, $pokedexId]);
+        
+        return $reponse->rowCount() > 0; // Vérifiez le nombre de lignes affectées
+    }
+
+
 
     public function listPokemons()
     {
@@ -204,13 +217,24 @@ class DAO
     {
         $apiUrl = "https://pokebuildapi.fr/api/v1/pokemon/$pokedexId";
         
-        $decodedData = json_decode(file_get_contents($apiUrl));
-
-        if ($decodedData === null) {
+        // Utilisation de @ pour supprimer les erreurs et file_get_contents
+        $apiResponse = @file_get_contents($apiUrl);
+    
+        // Vérifier si la réponse est vide ou non
+        if ($apiResponse === false || empty($apiResponse)) {
+            echo("ce pokémon n'a jamais existé dans l'univers pokémon, ");
+            echo("saisir un nombre entre 1 et 898");
+        }
+        // Décoder la réponse JSON
+        $decodedData = json_decode($apiResponse);
+        // Vérifier si l'objet JSON est null ou s'il contient une propriété "error"
+        if ($decodedData === null || isset($decodedData->error)) {
             return null;
         }
-
+    
         return $decodedData;
     }
+    
+    
 }
 ?>
