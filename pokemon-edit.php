@@ -10,28 +10,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["pokemon"])) {
     $pokemonDetails = is_numeric($pokemonIdentifier) ? $dao->PokemonById($pokemonIdentifier) : $dao->PokemonByName($pokemonIdentifier);
 
     if (!empty($pokemonDetails)) {
-        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["name"])) {
-            $newName = $_POST["name"];
-            $newId = $_POST["id"];
-            if ($dao->updatePokemonDetails($pokemonDetails[0][1], $newName, $newId)) {
-                header("Location: pokemon.php?pokemon=" . urlencode($pokemonDetails[0][1]) . "&updated=true");
-                exit();
-            } else {
-                header("Location: error.php");
-                exit();
-            }
-        }
-
-        if (isset($_GET["updated"]) && $_GET["updated"] === "true") {
-            header("Location: pokemon.php?pokemon=" . urlencode($pokemonDetails[0][1]));
-            exit();
-        }
-
+        // Affichage du message d'erreur si le Pokémon n'est pas trouvé
         ?>
         <h1>Editer le Pokémon</h1>
 
         <form method="post" action="">
-            <input type="text" name="id" value="<?php echo $pokemonDetails[0][1]; ?>">
+            <input type="text" name="id" value="<?php echo $pokemonDetails[0][1]; ?>" readonly>
             <label for="name">Name:</label>
             <input type="text" name="name" value="<?php echo $pokemonDetails[0][2]; ?>">
 
@@ -42,5 +26,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["pokemon"])) {
         echo "Pokémon non trouvé.";
     }
 }
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["name"])) {
+    $newName = $_POST["name"];
+    $newId = $_POST["id"];
+
+    // Utiliser des requêtes préparées pour la sécurité
+    if ($dao->updatePokemonDetails($newId, $newName)) {
+        header("Location: pokemon.php?pokemon=" . urlencode($newId) . "&updated=true");
+    } else {
+        header("Location: error.php");
+    }
+}
+
 include("footer.php");
 ?>

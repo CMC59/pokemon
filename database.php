@@ -69,15 +69,16 @@ class DAO
         
     }
 
-    // Fonction pour mettre à jour le nom et l'identifiant d'un Pokémon dans la base de données
-    public function updatePokemonDetails($pokedexId, $newName, $newId)
+    public function updatePokemonDetails($pokedexId, $newName)
     {
         $bdd = $this->connexion();
-        $reponse = $bdd->prepare("UPDATE pokemons SET name=?, id=? WHERE pokedexId=?");
-        $reponse->execute([$newName, $newId, $pokedexId]);
-        
+        $reponse = $bdd->prepare("UPDATE pokemons SET name=? WHERE pokedexId=?");
+        $reponse->execute([$newName, $pokedexId]);
+    
         return $reponse->rowCount() > 0; // Vérifiez le nombre de lignes affectées
     }
+    
+
 
     // Fonction pour obtenir le nombre total d'enregistrements dans la table des pokémons
     public function getTotalRecords()
