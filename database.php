@@ -26,7 +26,16 @@ class DAO
             $reponse->execute([$pokedexId, $name, $image, $sprite, $apiTypes, $apiGeneration, $apiEvolutions, $apiPreEvolution, $pokedexId]);
         }
 
+    public function isPokemonsTableEmpty()
+    {
+        $bdd = $this->connexion();
+        $reponse = $bdd->query("SELECT COUNT(*) FROM pokemons");
+        $count = $reponse->fetchColumn();
+        $reponse->closeCursor();
 
+        return ($count == 0);
+    }
+    
     public function insertPokemonsFromAPI()
     {
         $data = file_get_contents("https://pokebuildapi.fr/api/v1/pokemon");
@@ -136,6 +145,14 @@ class DAO
         return $pokemon;
     }
     
+    public function deletePokemon($pokemonId)
+    {
+        $bdd = $this->connexion();
+        $reponse = $bdd->prepare("DELETE FROM pokemons WHERE pokedexId = ?");
+        $reponse->execute([$pokemonId]);
+        return $reponse->rowCount() > 0;
+    }
+    
 
     public function getPokemonByGeneration($generation)
     {
@@ -155,8 +172,7 @@ class DAO
                 <img src='{$pokemon[0][3]}' alt='{$pokemon[0][2]}' />
                 <h2>{$pokemon[0][2]}</h2>
                 <p>ID: {$pokemon[0][1]}</p>
-            </div>
-        ";
+            </div>";
     }
 
     function formatPokemons($pokemon)
@@ -166,6 +182,9 @@ class DAO
                 <img src='{$pokemon['image']}' alt='{$pokemon['name']}' />
                 <h2>{$pokemon['name']}</h2>
                 <p>ID: {$pokemon['pokedexId']}</p>
+                <form method='post' action='index.php'><input type='hidden' name='pokemon_id' value='{$pokemon['pokedexId']}' />
+                <button type='submit'>Supprimer</button>
+                </form>
             </div>
         ";
     }

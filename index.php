@@ -2,10 +2,13 @@
 include("header.php");
 include("database.php");
 include("navbar.php");
-
 $dao = new DAO();
 
-
+// Vérifier si la table "pokemons" est vide
+if ($dao->isPokemonsTableEmpty()) {
+    // Si elle est vide, utilisez la fonction insertPokemonsFromAPI
+    $dao->insertPokemonsFromAPI();
+}
     if (isset($_POST['pokemonInput'])) {
         $input = $_POST['pokemonInput'];
         $normalizedInput = ucfirst(strtolower(str_replace(' ', '', $input)));
@@ -38,11 +41,41 @@ $dao = new DAO();
         if (!empty($pokemon)) {
             header("Location: pokemon.php?pokemon=" . urlencode($input));
             exit();
-        } else {
-            echo "Pokémon non trouvé.";
         }
     }
-?>
+    function handleSearch($dao)
+    {
+        if (isset($_POST['pokemonInput'])) {
+            $input = $_POST['pokemonInput'];
+            $normalizedInput = ucfirst(strtolower(str_replace(' ', '', $input)));
+    
+            $pokemon = $dao->PokemonByIdOrName($normalizedInput);
+    
+            if ($pokemon) {
+                echo $dao->formatPokemonCard($pokemon);
+            } else {
+                $dao->insertPokemon($normalizedInput, '', '', '', '', '');
+                echo "Nouveau Pokémon créé avec l'ID ou le nom $normalizedInput.";
+            }
+        }
+    }
+    
+    function handleDeletion($dao)
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["pokemon_id"])) {
+            $pokemonId = $_POST["pokemon_id"];
+            
+            if ($dao->deletePokemon($pokemonId)) {
+                echo "Pokémon supprimé avec succès.";
+            } else {
+                echo "La suppression du Pokémon a échoué. Veuillez réessayer.";
+            }
+        }
+    }
+    
+    handleSearch($dao);
+    handleDeletion($dao);
+    ?>
 <script>
     if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
