@@ -65,6 +65,16 @@ if ($dao->isPokemonsTableEmpty()) {
         echo '</div>';
     }
     
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $input = $_POST["pokemonInput"];
+        $pokemon = $dao->PokemonByIdOrName($input);
+
+        if (!empty($pokemon)) {
+            header("Location: pokemon.php?pokemon=" . urlencode($input));
+            exit();
+        }
+    }
     function handleSearch($dao)
     {
         if (isset($_POST['pokemonInput'])) {
