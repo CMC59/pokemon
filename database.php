@@ -146,14 +146,14 @@ class DAO
     
             if ($apiPokemon) {
                 // Extract necessary data from the API response
-                $pokedexId = $apiPokemon->pokedexId;
-                $name = $apiPokemon->name;
-                $image = $apiPokemon->image;
-                $sprite = $apiPokemon->sprite;
-                $apiTypes = json_encode($apiPokemon->apiTypes);
-                $apiGeneration = $apiPokemon->apiGeneration;
-                $apiEvolutions = json_encode($apiPokemon->apiEvolutions);
-                $apiPreEvolution = json_encode($apiPokemon->apiPreEvolution);
+                $pokedexId = isset($apiPokemon->pokedexId) ? $apiPokemon->pokedexId : null;
+                $name = isset($apiPokemon->name) ? $apiPokemon->name : null;
+                $image = isset($apiPokemon->image) ? $apiPokemon->image : null;
+                $sprite = isset($apiPokemon->sprite) ? $apiPokemon->sprite : null;
+                $apiTypes = isset($apiPokemon->apiTypes) ? json_encode($apiPokemon->apiTypes) : null;
+                $apiGeneration = isset($apiPokemon->apiGeneration) ? $apiPokemon->apiGeneration : null;
+                $apiEvolutions = isset($apiPokemon->apiEvolutions) ? json_encode($apiPokemon->apiEvolutions) : null;
+                $apiPreEvolution = isset($apiPokemon->apiPreEvolution) ? json_encode($apiPokemon->apiPreEvolution) : null;
     
                 // Insert the Pokémon into the database
                 $this->insertPokemon($pokedexId, $name, $image, $sprite, $apiTypes, $apiGeneration, $apiEvolutions, $apiPreEvolution);
@@ -165,6 +165,7 @@ class DAO
     
         return $pokemon;
     }
+    
     
     public function deletePokemon($pokemonId)
     {
@@ -186,16 +187,17 @@ class DAO
     }
 
     public function countPokemonByGeneration($generation)
-        {
-            $bdd = $this->connexion();
-            $reponse = $bdd->prepare("SELECT COUNT(*) as total FROM pokemons WHERE apiGeneration = ?");
-            $reponse->execute([$generation]);
-            $result = $reponse->fetch(PDO::FETCH_ASSOC);
-            $reponse->closeCursor();
+{
+    $bdd = $this->connexion();
+    $reponse = $bdd->prepare("SELECT COUNT(pokedexId) as total FROM pokemons WHERE apiGeneration = ?");
+    $reponse->execute([$generation]);
+    $result = $reponse->fetchColumn();
+    $reponse->closeCursor();
 
-            // Renvoie le nombre total de Pokémon dans la génération spécifiée
-            return $result['total'];
-        }
+    // Renvoie directement la valeur du COUNT(pokedexId)
+    return $result;
+}
+
 
         public function getPokemonByGenerationWithPagination($generation, $offset, $limit)
     {
