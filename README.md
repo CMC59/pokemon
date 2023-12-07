@@ -15,6 +15,8 @@ Mon application propose des fonctionnalités variées qui rendent l'exploration 
 - **Recherche par ID ou Nom :** Cherchez un Pokémon spécifique par son ID ou son nom.
 - **Gestion de la Base de Données :** Les Pokémon sont récupérés de l'API et stockés en base de données MySQL. Si un Pokémon n'existe pas en base, il est créé.
 - **Voir les évolutions et pré-évolutions :** Après avoir recherché un pokémon, tu as la possibilité de voir son évolution et sa pré-évol en bas. En cliquant sur les liens tu seras rediriger vers l'évol ou la pré-évol.
+- **Supprimer un Pokémon :** Supprimez un Pokémon existant dans la base de données.
+- **Modifier un Pokémon :** Après avoir recherché un Pokémon, vous avez la possibilité de voir son évolution et sa pré-évolution en bas. En cliquant sur les liens, vous serez redirigé vers l'évolution ou la pré-évolution.
 ## Utilisation des Langages
 
 Ce projet a été développé en utilisant les technologies suivantes :
