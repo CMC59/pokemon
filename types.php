@@ -23,10 +23,7 @@ foreach ($pokemons as $pokemon) {
     echo '</div>';
 }
 echo '</div>';
-
-
 }
-
 include_once("footer.php");
 ?>
 

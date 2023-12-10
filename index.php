@@ -1,4 +1,6 @@
 <?php
+ob_start();
+
 include_once("header.php");
 include_once("database.php");
 include_once("navbar.php");
@@ -9,6 +11,7 @@ $dao = new DAO();
 if ($dao->isPokemonsTableEmpty()) {
     // Si elle est vide, utilisez la fonction insertPokemonsFromAPI
     $dao->insertPokemonsFromAPI();
+    $dao->addTypesFromApi();
 }
     if (isset($_POST['pokemonInput'])) {
         $input = $_POST['pokemonInput'];
@@ -66,11 +69,9 @@ if ($dao->isPokemonsTableEmpty()) {
         echo '</div>';
     }
     
-
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $input = $_POST["pokemonInput"];
         $pokemon = $dao->PokemonByIdOrName($input);
-
         if (!empty($pokemon)) {
             header("Location: pokemon.php?pokemon=" . urlencode($input));
             exit();
@@ -81,9 +82,7 @@ if ($dao->isPokemonsTableEmpty()) {
         if (isset($_POST['pokemonInput'])) {
             $input = $_POST['pokemonInput'];
             $normalizedInput = ucfirst(strtolower(str_replace(' ', '', $input)));
-    
             $pokemon = $dao->PokemonByIdOrName($normalizedInput);
-    
             if ($pokemon) {
                 echo $dao->formatPokemonCard($pokemon);
             } else {
@@ -107,8 +106,8 @@ if ($dao->isPokemonsTableEmpty()) {
     }
     handleSearch($dao);
     handleDeletion($dao);
-
-    ?>
+ob_end_flush();
+?>
 <script>
     if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);

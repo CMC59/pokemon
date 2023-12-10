@@ -298,5 +298,32 @@ class DAO
         return $reponse->fetchAll(PDO::FETCH_ASSOC);
     }
     
+    // Méthode pour ajouter les types depuis l'API si ils n'existent pas
+    public function addTypesFromApi()
+    {
+        $bdd = $this->connexion();
+
+        // Récupérer la liste des types depuis l'API
+        $apiUrl = 'https://pokebuildapi.fr/api/v1/types';
+        $typesFromApi = json_decode(file_get_contents($apiUrl), true);
+
+        // Parcourir les types et les ajouter dans la table si ils n'existent pas
+        foreach ($typesFromApi as $type) {
+            $englishName = $type['englishName'];
+
+            // Vérifier si le type existe déjà dans la table
+            $query = "SELECT COUNT(*) AS count FROM types WHERE englishName = ?";
+            $stmt = $bdd->prepare($query);
+            $stmt->execute([$englishName]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result['count'] == 0) {
+                // Le type n'existe pas, l'ajouter à la table
+                $queryInsert = "INSERT INTO types (englishName) VALUES (?)";
+                $stmtInsert = $bdd->prepare($queryInsert);
+                $stmtInsert->execute([$englishName]);
+            }
+        }
+    }
 }
 ?>
