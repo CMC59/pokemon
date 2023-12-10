@@ -17,6 +17,7 @@ Mon application propose des fonctionnalités variées qui rendent l'exploration 
 - **Voir les évolutions et pré-évolutions :** Après avoir recherché un pokémon, tu as la possibilité de voir son évolution et sa pré-évol en bas. En cliquant sur les liens tu seras rediriger vers l'évol ou la pré-évol.
 - **Supprimer un Pokémon :** Supprimez un Pokémon existant dans la base de données.
 - **Modifier un Pokémon :** Après avoir recherché un Pokémon, vous avez la possibilité de modifer le nom du Pokémon (on s'est limité à ça mais il y a déjà une fonction prête pour update plus de choses).
+- **Selectionner par Type :** En cliquant sur l'une des icônes "Type", vous afficherez les Pokémons du "Type" souhaité.
 ## Utilisation des Langages
 
 Ce projet a été développé en utilisant les technologies suivantes :
