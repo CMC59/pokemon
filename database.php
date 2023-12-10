@@ -297,5 +297,6 @@ class DAO
         $reponse = $bdd->query("SELECT * FROM types");
         return $reponse->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 }
 ?>

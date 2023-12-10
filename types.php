@@ -13,15 +13,17 @@ if (isset($_GET['type'])) {
     // var_dump($pokemons);
 
 // Affichez les Pokémon du type sélectionné
+echo '<div class="pokemon-container">';
 foreach ($pokemons as $pokemon) {
-    echo '<div>';
+    echo '<div class="pokemon-card">';
     echo '<h2>' . $pokemon['name'] . '</h2>';
     echo '<img src="' . $pokemon['image'] . '" alt="' . $pokemon['name'] . '">';
     echo '<p>Numéro Pokedex : ' . $pokemon['pokedexId'] . '</p>';
     echo '<p>Type : ' . $selectedType . '</p>'; // Vous pouvez afficher le type ici
-    // Ajoutez d'autres informations en fonction de votre base de données
     echo '</div>';
 }
+echo '</div>';
+
 
 }
 
