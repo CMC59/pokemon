@@ -20,5 +20,28 @@
         </select>
         <input type="submit" value="Afficher par Génération">
     </form>
+    <form action="types.php" method="get"> <!-- Ajout d'une action -->
+        <?php
+        include_once("database.php");
+        // Dans votre classe DAO, ajoutez la méthode getAllTypeIcons
+        function getAllTypeIcons()
+        {
+            $dao = new DAO(); // Assurez-vous que vous instanciez la classe DAO
+            $bdd = $dao->connexion(); // Utilisez la méthode de connexion de votre classe DAO
+            $reponse = $bdd->query("SELECT id, name, image FROM types"); // Modification de la requête
+            return $reponse->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        // Récupérer les icônes des types depuis la base de données
+        $typeIcons = getAllTypeIcons();
+
+        // Afficher les icônes dans le menu avec des liens vers types.php
+        foreach ($typeIcons as $type) {
+            echo '<a href="types.php?type=' . $type['name'] . '">'; // Utilisation de name
+            echo '<img src="' . $type['image'] . '" class="type-icon" alt="' . $type['name'] . '">';
+            echo '</a>';
+        }
+        ?>
+    </form>
 
 </nav>

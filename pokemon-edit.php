@@ -1,8 +1,8 @@
 <?php
-include("header.php");
-include("database.php");
-include("navbar.php");
-
+include_once("header.php");
+include_once("database.php");
+include_once("navbar.php");
+include_once("navbartype.php");
 $dao = new DAO();
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["pokemon"])) {
@@ -39,5 +39,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["name"])) {
     }
 }
 
-include("footer.php");
+include_once("footer.php");
 ?>

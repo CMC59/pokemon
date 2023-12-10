@@ -274,6 +274,28 @@ class DAO
         return $decodedData;
     }
     
+    public function getPokemonsByType($typeName)
+    {
+        $bdd = $this->connexion();
+        
+        // Utiliser JSON_CONTAINS pour filtrer les Pokémon par type
+        $query = "SELECT p.*
+                FROM pokemons p
+                JOIN types t ON JSON_CONTAINS(p.apiTypes, CAST('[{\"name\": \"$typeName\"}]' AS JSON), '$')
+                WHERE t.name = ?";
+        
+        $stmt = $bdd->prepare($query);
+        $stmt->execute([$typeName]);
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
     
+    // Dans votre classe DAO, ajoutez la méthode getAllTypes
+    public function getAllTypes()
+    {
+        $bdd = $this->connexion();
+        $reponse = $bdd->query("SELECT * FROM types");
+        return $reponse->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

@@ -1,11 +1,10 @@
 <?php
-include("header.php");
-include("database.php");
-include("navbar.php");
-
+include_once("header.php");
+include_once("database.php");
+include_once("navbar.php");
+include_once("navbartype.php");
 $dao = new DAO();
 ?>
-
 <div class="container">
     <h1 class="h1">Pokémon Details</h1>
 
@@ -62,5 +61,5 @@ $dao = new DAO();
 </div>
 
 <?php
-include("footer.php");
+include_once("footer.php");
 ?>

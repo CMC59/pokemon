@@ -1,7 +1,8 @@
 <?php
-include("header.php");
-include("database.php");
-include("navbar.php");
+include_once("header.php");
+include_once("database.php");
+include_once("navbar.php");
+include_once("navbartype.php");
 $dao = new DAO();
 
 // Vérifier si la table "pokemons" est vide
@@ -114,5 +115,5 @@ if ($dao->isPokemonsTableEmpty()) {
     }
 </script>
 <?php
-include("footer.php");
+include_once("footer.php");
 ?>

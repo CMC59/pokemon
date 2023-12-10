@@ -98,3 +98,13 @@ body {
 .pokemon-details img {
     margin: 5px;
 }
+.type-icons-container {
+    display: flex;
+    justify-content: center;
+}
+
+.type-icon {
+    width: 30px; /* Définir la largeur souhaitée */
+    height: 30px; /* Définir la hauteur souhaitée */
+    margin-right: 10px;
+}
