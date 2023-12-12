@@ -4,26 +4,50 @@ include_once("database.php");
 include_once("navbar.php");
 $dao = new DAO();
 
-// Dans votre script principal (types.php) avant d'afficher les Pokémon
+function generatePokemonGrid($pokemons, $selectedType, $page, $perPage) {
+    $startIndex = ($page - 1) * $perPage;
+    $endIndex = $startIndex + $perPage;
+    
+    $htmlContent = '<div class="pokemon-container">';
+    $i = 0;
+    
+    foreach (array_slice($pokemons, $startIndex, $perPage) as $pokemon) {
+        $htmlContent .= '<div class="pokemon-card">';
+        $htmlContent .= '<h2>' . htmlspecialchars($pokemon['name'], ENT_QUOTES, 'UTF-8') . '</h2>';
+        $htmlContent .= '<img src="' . htmlspecialchars($pokemon['image'], ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($pokemon['name'], ENT_QUOTES, 'UTF-8') . '">';
+        $htmlContent .= '<p>Numéro Pokedex : ' . htmlspecialchars($pokemon['pokedexId'], ENT_QUOTES, 'UTF-8') . '</p>';
+        $htmlContent .= '<p>Type : ' . htmlspecialchars($selectedType, ENT_QUOTES, 'UTF-8') . '</p>';
+        $htmlContent .= '</div>';
+        
+        $i++;
+        if ($i % 5 == 0) {
+            $htmlContent .= '</div><div class="pokemon-container">';
+        }
+    }
+    
+    $htmlContent .= '</div>';
+    return $htmlContent;
+}
+
 if (isset($_GET['type'])) {
     $selectedType = $_GET['type'];
-    // var_dump($selectedType);
-    // Récupérez les Pokémon du type sélectionné depuis la base de données
-    $pokemons = $dao->getPokemonsByType($selectedType);
-    // var_dump($pokemons);
 
-// Affichez les Pokémon du type sélectionné
-echo '<div class="pokemon-container">';
-foreach ($pokemons as $pokemon) {
-    echo '<div class="pokemon-card">';
-    echo '<h2>' . $pokemon['name'] . '</h2>';
-    echo '<img src="' . $pokemon['image'] . '" alt="' . $pokemon['name'] . '">';
-    echo '<p>Numéro Pokedex : ' . $pokemon['pokedexId'] . '</p>';
-    echo '<p>Type : ' . $selectedType . '</p>'; // Vous pouvez afficher le type ici
+    $pokemons = $dao->getPokemonsByType($selectedType);
+
+    $perPage = 25;
+    $page = isset($_GET['page']) ? max(1, $_GET['page']) : 1;
+
+    $pokemonHtml = generatePokemonGrid($pokemons, $selectedType, $page, $perPage);
+
+    echo $pokemonHtml;
+
+    $totalPages = ceil(count($pokemons) / $perPage);
+    echo '<div class="pagination">';
+    for ($i = 1; $i <= $totalPages; $i++) {
+        echo '<a href="?type=' . $selectedType . '&page=' . $i . '">' . $i . '</a>';
+    }
     echo '</div>';
 }
-echo '</div>';
-}
+
 include_once("footer.php");
 ?>
-

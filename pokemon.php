@@ -21,7 +21,6 @@ $dao = new DAO();
 
         // Afficher les types
         $types = json_decode($pokemonDetails[0][5], true);
-        var_dump($types);
         if ($types == null or $types == []) {
             echo "Erreur : types invalides.";
         } else {
