@@ -56,11 +56,13 @@ if (isset($_POST['generationSelect'])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $input = $_POST["pokemonInput"];
-    $pokemon = $dao->PokemonByIdOrName($input);
-    if (!empty($pokemon)) {
-        header("Location: pokemon.php?pokemon=" . urlencode($input));
-        exit();
+    if (isset($_POST['pokemonInput'])) {
+        $input = $_POST["pokemonInput"];
+        $pokemon = $dao->PokemonByIdOrName($input);
+        if (!empty($pokemon)) {
+            header("Location: pokemon.php?pokemon=" . urlencode($input));
+            exit();
+        }
     }
 }
 

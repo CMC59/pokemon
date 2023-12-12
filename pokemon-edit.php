@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["pokemon"])) {
         <h1>Editer le Pokémon</h1>
 
         <form method="post" action="">
-            <input type="text" name="id" value="<?php echo $pokemonDetails[0][1]; ?>" readonly>
+            <input type="hidden" name="id" value="<?php echo $pokemonDetails[0][1]; ?>" readonly>
             <label for="name">Name:</label>
             <input type="text" name="name" value="<?php echo $pokemonDetails[0][2]; ?>">
 
