@@ -14,7 +14,7 @@ function generatePokemonGrid($pokemons, $selectedType, $page, $perPage) {
     foreach (array_slice($pokemons, $startIndex, $perPage) as $pokemon) {
         $htmlContent .= '<div class="pokemon-card">';
         $htmlContent .= '<h2>' . htmlspecialchars($pokemon['name'], ENT_QUOTES, 'UTF-8') . '</h2>';
-        $htmlContent .= '<img src="' . htmlspecialchars($pokemon['image'], ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($pokemon['name'], ENT_QUOTES, 'UTF-8') . '">';
+        $htmlContent .= '<img class="imaagee" src="' . htmlspecialchars($pokemon['image'], ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($pokemon['name'], ENT_QUOTES, 'UTF-8') . '">';
         $htmlContent .= '<p>Numéro Pokedex : ' . htmlspecialchars($pokemon['pokedexId'], ENT_QUOTES, 'UTF-8') . '</p>';
         $htmlContent .= '<p>Type : ' . htmlspecialchars($selectedType, ENT_QUOTES, 'UTF-8') . '</p>';
         $htmlContent .= '</div>';
