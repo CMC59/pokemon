@@ -166,8 +166,7 @@ class DAO
     
         return $pokemon;
     }
-    
-    
+
     public function deletePokemon($pokemonId)
     {
         $bdd = $this->connexion();

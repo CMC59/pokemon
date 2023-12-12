@@ -8,28 +8,39 @@ $dao = new DAO();
 <div class="container">
     <h1 class="h1">Pokémon Details</h1>
 
-    <?php
-    $pokemonIdentifier = $_GET["pokemon"];
-    $pokemonDetails = is_numeric($pokemonIdentifier) ? $dao->PokemonById($pokemonIdentifier) : $dao->PokemonByName($pokemonIdentifier);
+<?php
+$pokemonIdentifier = $_GET["pokemon"];
+$pokemonDetails = is_numeric($pokemonIdentifier) ? $dao->PokemonById($pokemonIdentifier) : $dao->PokemonByName($pokemonIdentifier);
 
-    if (!empty($pokemonDetails)) {
-        // Affichez les détails du Pokémon
-        echo "<h2 class='pokemon-details'>{$pokemonDetails[0][2]}</h2>";
-        echo "<p>ID: {$pokemonDetails[0][1]}</p>";
-        echo "<img class='pokemon-img' src='{$pokemonDetails[0][3]}' alt='{$pokemonDetails[0][2]}' />";
+if (!empty($pokemonDetails)) {
+    // Affichez les détails du Pokémon
+    echo "<h2 class='pokemon-details'>{$pokemonDetails[0][2]}</h2>";
+    echo "<p>ID: {$pokemonDetails[0][1]}</p>";
+    echo "<img class='pokemon-img' src='{$pokemonDetails[0][3]}' alt='{$pokemonDetails[0][2]}' />";
+
+    // Vérifier si l'ID est dans la plage valide
+    $isValidId = ($pokemonDetails[0][1] >= 1 && $pokemonDetails[0][1] <= 898);
+
+    if ($isValidId) {
         echo "<a href='pokemon-edit.php?pokemon={$pokemonDetails[0][1]}'><button class='edit-button'>Editer le Pokémon</button></a>";
+    }
 
-        // Afficher les types
-        $types = json_decode($pokemonDetails[0][5], true);
-        if ($types == null or $types == []) {
-            echo "Erreur : types invalides.";
-        } else {
-            echo "<p class='pokemon-details'>Types: ";
-            foreach ($types as $type) {
-                echo "<img src='{$type["image"]}' alt='{$type["name"]}' />";
-            }
-            echo "</p>";
+    if (empty($isValidId)) {
+        echo "<h2>Veuillez saisir un nombre compris entre 1 et 898,<br> ou un nom de pokémon</h2>";
+    }
+
+    // Afficher les types
+    $types = json_decode($pokemonDetails[0][5], true);
+    if ($types == null or $types == []) {
+        echo "Erreur : types invalides.";
+    } else {
+        echo "<p class='pokemon-details'>Types: ";
+        foreach ($types as $type) {
+            echo "<img src='{$type["image"]}' alt='{$type["name"]}' />";
         }
+        echo "</p>";
+    }
+
 
 
         // Afficher les évolutions

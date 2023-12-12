@@ -94,6 +94,7 @@ function handleDeletion($dao)
 }
 handleSearch($dao);
 handleDeletion($dao);
+
 ob_end_flush();
 ?>
 <script>
