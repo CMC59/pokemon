@@ -230,7 +230,7 @@ class DAO
     {
         return "
             <div class='pokemon-card'>
-                <img class='imaagee'src='{$pokemon['image']}' alt='{$pokemon['name']}' />
+                <img class='imaagee' src='{$pokemon['image']}' alt='{$pokemon['name']}' />
                 <h2>{$pokemon['name']}</h2>
                 <p>ID: {$pokemon['pokedexId']}</p>
                 <form method='post' action='index.php'><input type='hidden' name='pokemon_id' value='{$pokemon['pokedexId']}' />
