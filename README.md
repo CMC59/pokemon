@@ -39,3 +39,5 @@ Ce projet a été développé en utilisant les technologies suivantes :
         $pdo = new PDO('mysql:host=SERVERADRESS;dbname=DATABASENAME', 'USERNAME', 'PASSWORD');
 ?>
 
+```
+![pokemonsearch](https://github.com/CMC59/pokemon/assets/76819554/a55e0e97-02d2-4f0d-a19b-98748fc3735a)
