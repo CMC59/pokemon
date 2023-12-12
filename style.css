@@ -136,16 +136,19 @@ body {
     margin-top: 20px;
 }
 
-.pagination a {
+.pagination a,
+.pagination button {
     color: #333;
     padding: 8px 16px;
     text-decoration: none;
     border: 1px solid #ccc;
     margin: 0 4px;
     border-radius: 4px;
+    cursor: pointer;
 }
 
-.pagination a:hover {
+.pagination a:hover,
+.pagination button:hover {
     background-color: #ddd;
 }
 
