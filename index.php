@@ -11,7 +11,6 @@ $dao = new DAO();
 if ($dao->isPokemonsTableEmpty()) {
     // Si elle est vide, utilisez la fonction insertPokemonsFromAPI
     $dao->insertPokemonsFromAPI();
-    $dao->addTypesFromApi();
 }
 
 if (isset($_POST['pokemonInput'])) {
@@ -26,7 +25,6 @@ if (isset($_POST['pokemonInput'])) {
     } else {
         // Création du Pokémon en base de données
         $dao->insertPokemon($normalizedInput, '', '', '', '', '');
-        echo "Nouveau Pokémon créé avec l'ID ou le nom " . htmlspecialchars($normalizedInput, ENT_QUOTES, 'UTF-8') . ".";
     }
 }
 

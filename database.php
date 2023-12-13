@@ -11,20 +11,27 @@ class DAO
         return $pdo;
     }
 
-    // Fonction pour insérer un nouveau Pokémon dans la base de données s'il n'existe pas déjà
-    public function insertPokemon($pokedexId, $name, $image, $sprite, $apiTypes, $apiGeneration, $apiEvolutions, $apiPreEvolution)
-        {
-            $bdd = $this->connexion();
-            
-            // Vérifier si le Pokémon n'existe pas déjà dans la base de données
-            $reponse = $bdd->prepare("
-                INSERT INTO pokemons(pokedexId, name, image, sprite, apiTypes, apiGeneration, apiEvolutions, apiPreEvolution) 
-                SELECT ?, ?, ?, ?, ?, ?, ?, ? 
-                FROM DUAL 
-                WHERE NOT EXISTS (SELECT 1 FROM pokemons WHERE pokedexId = ?)
-            ");
-            $reponse->execute([$pokedexId, $name, $image, $sprite, $apiTypes, $apiGeneration, $apiEvolutions, $apiPreEvolution, $pokedexId]);
+    public function insertPokemon($pokedexId, $name, $image, $sprite, $apiTypes, $apiGeneration, $apiEvolutions = null, $apiPreEvolution = null)
+    {
+        $bdd = $this->connexion();
+    
+        // Vérifier si le tableau $apiEvolutions est vide
+        if (empty($apiEvolutions)) {
+            echo "Le pokémon n'est pas présent dans les générations 1 à 8 !";
+            return;
         }
+    
+        // Vérifier si le Pokémon n'existe pas déjà dans la base de données
+        $reponse = $bdd->prepare("
+            INSERT INTO pokemons(pokedexId, name, image, sprite, apiTypes, apiGeneration, apiEvolutions, apiPreEvolution) 
+            SELECT ?, ?, ?, ?, ?, ?, ?, ? 
+            FROM DUAL 
+            WHERE NOT EXISTS (SELECT 1 FROM pokemons WHERE pokedexId = ?)
+        ");
+        $reponse->execute([$pokedexId, $name, $image, $sprite, $apiTypes, $apiGeneration, $apiEvolutions, $apiPreEvolution, $pokedexId]);
+    }
+    
+
 
     public function isPokemonsTableEmpty()
     {
@@ -75,12 +82,11 @@ class DAO
         $reponse = $bdd->prepare("UPDATE pokemons SET name=? WHERE pokedexId=?");
         $reponse->execute([$newName, $pokedexId]);
     
-        return $reponse->rowCount() > 0; // Vérifiez le nombre de lignes affectées
+        return $reponse->rowCount() > 0; 
     }
     
 
 
-    // Fonction pour obtenir le nombre total d'enregistrements dans la table des pokémons
     public function getTotalRecords()
     {
         $bdd = $this->connexion();
@@ -134,19 +140,16 @@ class DAO
 
     public function PokemonByIdOrName($input)
     {
-        // Vérifier si l'entrée est un nombre (ID) ou une chaîne de caractères (nom)
         if (is_numeric($input)) {
             $pokemon = $this->PokemonById($input);
         } else {
             $pokemon = $this->PokemonByName($input);
         }
     
-        // If the Pokémon doesn't exist, fetch it from the API and insert it
         if (empty($pokemon)) {
             $apiPokemon = $this->getPokemonFromApi($input);
     
             if ($apiPokemon) {
-                // Extract necessary data from the API response
                 $pokedexId = isset($apiPokemon->pokedexId) ? $apiPokemon->pokedexId : null;
                 $name = isset($apiPokemon->name) ? $apiPokemon->name : null;
                 $image = isset($apiPokemon->image) ? $apiPokemon->image : null;
@@ -156,10 +159,8 @@ class DAO
                 $apiEvolutions = isset($apiPokemon->apiEvolutions) ? json_encode($apiPokemon->apiEvolutions) : null;
                 $apiPreEvolution = isset($apiPokemon->apiPreEvolution) ? json_encode($apiPokemon->apiPreEvolution) : null;
     
-                // Insert the Pokémon into the database
                 $this->insertPokemon($pokedexId, $name, $image, $sprite, $apiTypes, $apiGeneration, $apiEvolutions, $apiPreEvolution);
     
-                // Retrieve the Pokémon from the database after insertion
                 $pokemon = $this->PokemonById($pokedexId);
             }
         }
@@ -258,11 +259,6 @@ class DAO
         // Utilisation de @ pour supprimer les erreurs et file_get_contents
         $apiResponse = @file_get_contents($apiUrl);
     
-        // Vérifier si la réponse est vide ou non
-        if ($apiResponse === false || empty($apiResponse)) {
-            echo("ce pokémon n'a jamais existé dans l'univers pokémon, ");
-            echo("saisir un nombre entre 1 et 898");
-        }
         // Décoder la réponse JSON
         $decodedData = json_decode($apiResponse);
         // Vérifier si l'objet JSON est null ou s'il contient une propriété "error"
@@ -295,34 +291,6 @@ class DAO
         $bdd = $this->connexion();
         $reponse = $bdd->query("SELECT * FROM types");
         return $reponse->fetchAll(PDO::FETCH_ASSOC);
-    }
-    
-    // Méthode pour ajouter les types depuis l'API si ils n'existent pas
-    public function addTypesFromApi()
-    {
-        $bdd = $this->connexion();
-
-        // Récupérer la liste des types depuis l'API
-        $apiUrl = 'https://pokebuildapi.fr/api/v1/types';
-        $typesFromApi = json_decode(file_get_contents($apiUrl), true);
-
-        // Parcourir les types et les ajouter dans la table si ils n'existent pas
-        foreach ($typesFromApi as $type) {
-            $englishName = $type['englishName'];
-
-            // Vérifier si le type existe déjà dans la table
-            $query = "SELECT COUNT(*) AS count FROM types WHERE englishName = ?";
-            $stmt = $bdd->prepare($query);
-            $stmt->execute([$englishName]);
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($result['count'] == 0) {
-                // Le type n'existe pas, l'ajouter à la table
-                $queryInsert = "INSERT INTO types (englishName) VALUES (?)";
-                $stmtInsert = $bdd->prepare($queryInsert);
-                $stmtInsert->execute([$englishName]);
-            }
-        }
     }
 }
 ?>

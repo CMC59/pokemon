@@ -20,7 +20,6 @@ if (!empty($pokemonDetails)) {
 
     // Vérifier si l'ID est dans la plage valide
     $isValidId = ($pokemonDetails[0][1] >= 1 && $pokemonDetails[0][1] <= 898);
-
     if ($isValidId) {
         echo "<a href='pokemon-edit.php?pokemon={$pokemonDetails[0][1]}'><button class='edit-button'>Editer le Pokémon</button></a>";
     }
