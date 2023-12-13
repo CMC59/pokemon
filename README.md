@@ -18,6 +18,7 @@ Mon application propose des fonctionnalités variées qui rendent l'exploration 
 - **Supprimer un Pokémon :** Supprimez un Pokémon existant dans la base de données.
 - **Modifier un Pokémon :** Après avoir recherché un Pokémon, vous avez la possibilité de modifer le nom du Pokémon (on s'est limité à ça mais il y a déjà une fonction prête pour update plus de choses).
 - **Selectionner par Type :** En cliquant sur l'une des icônes "Type", vous afficherez les Pokémons du "Type" souhaité.
+- **Système de pagination :** Pour rendre la navigation plus agréable après une recherche par Type ou par Génération.
 ## Utilisation des Langages
 
 Ce projet a été développé en utilisant les technologies suivantes :
@@ -39,3 +40,5 @@ Ce projet a été développé en utilisant les technologies suivantes :
         $pdo = new PDO('mysql:host=SERVERADRESS;dbname=DATABASENAME', 'USERNAME', 'PASSWORD');
 ?>
 
+```
+![pokemonsearch](https://github.com/CMC59/pokemon/assets/76819554/a55e0e97-02d2-4f0d-a19b-98748fc3735a)
