@@ -25,7 +25,6 @@ Ce projet a été développé en utilisant les technologies suivantes :
 
 - **PHP :** Le côté serveur du projet est principalement développé en PHP pour gérer les logiques métier et l'interaction avec la base de données MySQL.
 - **MySQL :** La base de données utilise MySQL pour stocker de manière organisée les informations détaillées sur les Pokémon.
-- **HTML :** Les pages web sont construites en utilisant HTML pour définir la structure et le contenu.
 - **CSS :** Les styles visuels de l'application sont stylisés à l'aide de CSS pour offrir une expérience utilisateur agréable.
 
 ## Configuration
