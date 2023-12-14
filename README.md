@@ -41,3 +41,6 @@ Ce projet a été développé en utilisant les technologies suivantes :
 
 ```
 ![pokemonsearch](https://github.com/CMC59/pokemon/assets/76819554/a55e0e97-02d2-4f0d-a19b-98748fc3735a)
+
+
+![typeplante](https://github.com/CMC59/pokemon/assets/76819554/0a3ee912-1144-413b-89d2-73c47c3ba226)
